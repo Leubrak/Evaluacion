@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Simple</title>
+    <style>
+        body{
+            display: flex;
+            align-items: center;
+            margin: 0px;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        button:hover{
+            background-color: rgb(129, 123, 212);
+        }
+    
+        h1{
+            margin-bottom: 10px;
+        }
+
+        button{
+            background-color: blue;
+            width: 20%;
+            height: 20%;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>La prueba del botón</h1>
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+    <button onclick="mostrarAlerta()">Cargar datos</button>
+</body>
+    <script>
+        function mostrarAlerta(){
+            alert("Cargando datos...")
+        }
+    </script>
+</html>

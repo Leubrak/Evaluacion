@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos de Programación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        button {
+            background-color: #0066ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #1c2b41;
+        }
+        
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-top: 30px;
+        }
+        
+        .project-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(104, 67, 67, 0.15);
+        }
+        
+        .project-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .project-logo img {
+            max-width: 60%;
+            max-height: 60%;
+        }
+        
+        .project-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .project-description {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        .error-message {
+            color: #d9534f;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Proyectos de Programación</h1>
+        <p>Haz clic en el botón para cargar información sobre 10 proyectos de programación populares. Luego, haz clic en cualquier proyecto para ver más información en Wikipedia.</p>
+        <button id="cargarBtn">Cargar datos</button>
+        <div id="loading" class="loading">Cargando proyectos...</div>
+        <div id="error" class="error-message"></div>
+        <div id="projectsContainer" class="projects-container"></div>
+    </div>
+
+    
+    <script>
+        const gistUrl = 'https://api.github.com/gists/c02d9cd5c28a8fabe7243fb6042ea7c3';
+        
+        const projectsData = [
+            {
+                name: "React",
+                description: "Biblioteca JavaScript para construir interfaces de usuario",
+                logo: "https://www.pngmart.com/files/23/React-Logo-PNG-Pic-200x200.png",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/React"
+            },
+            {   
+                name: "Vue.js",
+                description: "Framework progresivo para construir interfaces de usuario",
+                logo: "https://svgl.app/library/vue.svg",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/Vue.js"
+            },
+            
+            {
+                name: "Angular",
+                description: "Framework de desarrollo para JavaScript",
+                logo: "https://tse3.mm.bing.net/th?id=OIP.OVUtPepwEqUuUIUtwO8lngHaH3&pid=Api&P=0&h=180",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/Angular_(framework)"
+            },
+            {
+                name: "Node.js",
+                description: "Entorno de ejecución para JavaScript construido con el motor V8 de Chrome",
+                logo: "https://logodix.com/logo/1764972.png",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/Node.js"
+            },
+            {
+                name: "Python",
+                description: "Lenguaje de programación interpretado",
+                logo: "https://i.pinimg.com/originals/8f/23/98/8f2398dcd19c6a1776f6b55c83073c67.png",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/Python"
+            },
+            {
+                name: "Java",
+                description: "Lenguaje de programación de propósito general",
+                logo: "https://static.vecteezy.com/system/resources/previews/022/100/214/non_2x/java-logo-transparent-free-png.png",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/Java_(lenguaje_de_programación)"
+            },
+            {
+                name: "PHP",
+                description: "Lenguaje de programación de uso general para desarrollo web",
+                logo: "http://lofrev.net/wp-content/photos/2017/05/php_emblem.png",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/PHP"
+            },
+            {
+                name: "Ruby",
+                description: "Lenguaje de programación dinámico y de código abierto",
+                logo: "https://www.tuexperto.com/wp-content/uploads/2023/05/ruby.jpg",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/Ruby"
+            },
+            {
+                name: "Swift",
+                description: "Lenguaje de programación multiparadigma para iOS y macOS",
+                logo: "https://lenguajesdeprogramacion.net/wp-content/uploads/2017/08/apple-swift.jpg",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/Swift_(lenguaje_de_programación)"
+            },
+            { 
+                name: "Go",
+                description: "Lenguaje de programación concurrente y compilado",
+                logo: "https://download.logo.wine/logo/Go_(programming_language)/Go_(programming_language)-Logo.wine.png",
+                wikipediaUrl: "https://es.wikipedia.org/wiki/Go_(lenguaje_de_programación)"
+               
+            }
+        ];
+
+        document.getElementById('cargarBtn').addEventListener('click', function() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const projectsContainerEl = document.getElementById('projectsContainer');
+            
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            projectsContainerEl.innerHTML = '';
+            
+            setTimeout(() => {
+                try {
+                    // Procesar los datos
+                    displayProjects(projectsData);
+                    loadingEl.style.display = 'none';
+                } catch (error) {
+                    loadingEl.style.display = 'none';
+                    errorEl.textContent = 'Error al cargar los proyectos: ' + error.message;
+                    errorEl.style.display = 'block';
+                }
+            }, 1000);
+            
+          
+        });
+        
+        function displayProjects(projects) {
+            const projectsContainerEl = document.getElementById('projectsContainer');
+            projectsContainerEl.innerHTML = '';
+            
+            projects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                projectCard.onclick = function() {
+                    window.open(project.wikipediaUrl, '_blank');
+                };
+                
+                projectCard.innerHTML = `
+                    <div class="project-logo">
+                        <img src="${project.logo}" alt="${project.name} logo">
+                    </div>
+                    <div class="project-name">${project.name}</div>
+                    <div class="project-description">${project.description}</div>
+                `;
+                
+                projectsContainerEl.appendChild(projectCard);
+            });
+        }
+    </script>
+</body>
+</html>
